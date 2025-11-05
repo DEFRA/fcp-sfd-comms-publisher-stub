@@ -36,7 +36,7 @@ jobs:
           docker build --no-cache --tag cdp-node-backend-template .
           exit $?
 
-      - name: SonarCloud Scan
+      - name: SonarQube Cloud Scan
         if: github.actor != 'dependabot[bot]'
         uses: SonarSource/sonarqube-scan-action@v6
         env:
