@@ -1,6 +1,16 @@
 import { vi, describe, beforeAll, afterAll, test, expect } from 'vitest'
 import hapi from '@hapi/hapi'
 
+const mockLoggerInfo = vi.fn()
+const mockLoggerError = vi.fn()
+
+vi.mock('../../../../src/common/helpers/logging/logger.js', () => ({
+  createLogger: () => ({
+    info: (...args) => mockLoggerInfo(...args),
+    error: (...args) => mockLoggerError(...args)
+  })
+}))
+
 describe('#startServer', () => {
   let createServerSpy
   let hapiServerSpy
@@ -30,11 +40,16 @@ describe('#startServer', () => {
   })
 
   describe('When server start fails', () => {
-    test('Should log failed startup message', async () => {
+    beforeAll(() => {
       createServerSpy.mockRejectedValue(new Error('Server failed to start'))
+    })
 
-      await expect(startServerImport.startServer()).rejects.toThrow(
-        'Server failed to start'
+    test('should log failed startup message', async () => {
+      await startServerImport.startServer()
+
+      expect(mockLoggerInfo).toHaveBeenCalledWith('Server failed to start')
+      expect(mockLoggerError).toHaveBeenCalledWith(
+        new Error('Server failed to start')
       )
     })
   })

@@ -51,10 +51,10 @@ describe('config', () => {
     expect(config.get('port')).toBe(6000)
   })
 
-  test('should default port to 3002 if not provided in environment variable', async () => {
+  test('should default port to 3008 if not provided in environment variable', async () => {
     delete process.env.PORT
     const { config } = await import('../../src/config.js')
-    expect(config.get('port')).toBe(3002)
+    expect(config.get('port')).toBe(3008)
   })
 
   test('should throw error if port is not a number', async () => {
@@ -69,7 +69,7 @@ describe('config', () => {
 
   test('should return service name with default value', async () => {
     const { config } = await import('../../src/config.js')
-    expect(config.get('serviceName')).toBe('fcp-fdm-event-publisher-stub')
+    expect(config.get('serviceName')).toBe('fcp-sfd-comms-publisher-stub')
   })
 
   test('should return service version from environment variable', async () => {
