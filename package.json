@@ -28,6 +28,8 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
+    "@aws-sdk/client-sns": "3.925.0",
+    "@defra/hapi-secure-context": "0.3.0",
     "@defra/hapi-tracing": "1.22.0",
     "@elastic/ecs-pino-format": "1.5.0",
     "@hapi/hapi": "21.4.0",
@@ -40,6 +42,7 @@
     "hapi-pulse": "3.0.1",
     "hapi-swagger": "17.3.2",
     "joi": "17.13.3",
+    "pino": "10.1.0",
     "pino-pretty": "13.0.0",
     "undici": "7.10.0"
   },

@@ -1,4 +1,4 @@
-name: fcp-sfd
+name: fcp-sfd-comms-publisher-stub
 
 services:
   fcp-sfd-comms-publisher-stub:

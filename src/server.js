@@ -1,4 +1,5 @@
 import Hapi from '@hapi/hapi'
+import Joi from 'joi'
 
 import { secureContext } from '@defra/hapi-secure-context'
 
@@ -38,12 +39,8 @@ async function createServer () {
     }
   })
 
-  // Hapi Plugins:
-  // requestLogger  - automatically logs incoming requests
-  // requestTracing - trace header logging and propagation
-  // secureContext  - loads CA certificates from environment config
-  // pulse          - provides shutdown handlers
-  // router         - routes used in the app
+  server.validator(Joi)
+
   await server.register([
     requestLogger,
     requestTracing,
