@@ -1,9 +1,6 @@
 import convict from 'convict'
 import convictFormatWithValidator from 'convict-format-with-validator'
 
-import { convictValidateMongoUri } from './common/helpers/convict/validate-mongo-uri.js'
-
-convict.addFormat(convictValidateMongoUri)
 convict.addFormats(convictFormatWithValidator)
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -26,7 +23,7 @@ const config = convict({
   port: {
     doc: 'The port to bind',
     format: 'port',
-    default: 3001,
+    default: 3008,
     env: 'PORT'
   },
   serviceName: {
@@ -76,39 +73,40 @@ const config = convict({
         : ['req', 'res', 'responseTime']
     }
   },
-  mongo: {
-    mongoUrl: {
-      doc: 'URI for mongodb',
+  aws: {
+    region: {
+      doc: 'AWS region',
       format: String,
-      default: 'mongodb://127.0.0.1:27017/',
-      env: 'MONGO_URI'
+      default: 'eu-west-2',
+      env: 'AWS_REGION'
     },
-    databaseName: {
-      doc: 'database for mongodb',
+    endpoint: {
+      doc: 'AWS endpoint URL, for example to use with LocalStack',
       format: String,
-      default: 'fcp-sfd-comms-publisher-stub',
-      env: 'MONGO_DATABASE'
+      nullable: true,
+      default: null,
+      env: 'AWS_ENDPOINT_URL'
     },
-    mongoOptions: {
-      retryWrites: {
-        doc: 'Enable Mongo write retries, overrides mongo URI when set.',
-        format: Boolean,
-        default: null,
-        nullable: true,
-        env: 'MONGO_RETRY_WRITES'
-      },
-      readPreference: {
-        doc: 'Mongo read preference, overrides mongo URI when set.',
-        format: [
-          'primary',
-          'primaryPreferred',
-          'secondary',
-          'secondaryPreferred',
-          'nearest'
-        ],
-        default: null,
-        nullable: true,
-        env: 'MONGO_READ_PREFERENCE'
+    accessKeyId: {
+      doc: 'AWS access key ID',
+      format: String,
+      nullable: true,
+      default: null,
+      env: 'AWS_ACCESS_KEY_ID'
+    },
+    secretAccessKey: {
+      doc: 'AWS secret access key',
+      format: String,
+      nullable: true,
+      default: null,
+      env: 'AWS_SECRET_ACCESS_KEY'
+    },
+    sns: {
+      topicArn: {
+        doc: 'AWS SNS topic ARN',
+        format: String,
+        env: 'AWS_SNS_TOPIC_ARN',
+        default: null
       }
     }
   },
@@ -119,11 +117,25 @@ const config = convict({
     default: null,
     env: 'HTTP_PROXY'
   },
+  isSecureContextEnabled: {
+    doc: 'Enable Secure Context',
+    format: Boolean,
+    default: isProduction,
+    env: 'ENABLE_SECURE_CONTEXT'
+  },
   isMetricsEnabled: {
     doc: 'Enable metrics reporting',
     format: Boolean,
     default: isProduction,
     env: 'ENABLE_METRICS'
+  },
+  api: {
+    enabled: {
+      doc: 'Enable API endpoints',
+      format: Boolean,
+      default: process.env.ENVIRONMENT !== 'prod',
+      env: 'API_ENABLED'
+    }
   },
   tracing: {
     header: {
