@@ -29,7 +29,7 @@ subscribe_queue_to_topic() {
   awslocal --endpoint-url=http://${LOCALSTACK_HOST}:4566 sns subscribe --topic-arn arn:aws:sns:${AWS_REGION}:000000000000:${TOPIC} --protocol sqs --notification-endpoint ${QUEUE_ARN} --region ${AWS_REGION}
 }
 
-create_queue "fcp_fdm_events"
+create_queue "fcp_sfd_comms_request"
 create_topic "fcp_event_publisher"
 
-subscribe_queue_to_topic "fcp_event_publisher" "fcp_fdm_events"
+subscribe_queue_to_topic "fcp_event_publisher" "fcp_sfd_comms_request"
