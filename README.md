@@ -1,44 +1,27 @@
 # fcp-sfd-comms-publisher-stub
 
-Core delivery platform Node.js Backend Template.
+## API
 
-- [Requirements](#requirements)
-  - [Node.js](#nodejs)
-- [Local development](#local-development)
-  - [Setup](#setup)
-  - [Development](#development)
-  - [Testing](#testing)
-  - [Production](#production)
-  - [Npm scripts](#npm-scripts)
-  - [Update dependencies](#update-dependencies)
-  - [Formatting](#formatting)
-    - [Windows prettier issue](#windows-prettier-issue)
-- [API endpoints](#api-endpoints)
-- [Development helpers](#development-helpers)
-  - [MongoDB Locks](#mongodb-locks)
-  - [Proxy](#proxy)
-- [Docker](#docker)
-  - [Development image](#development-image)
-  - [Production image](#production-image)
-  - [Docker Compose](#docker-compose)
-  - [Dependabot](#dependabot)
-  - [SonarCloud](#sonarcloud)
-- [Licence](#licence)
-  - [About the licence](#about-the-licence)
+When the API is enabled (default for non-production environments) the following endpoints are available:
+
+| Method | Endpoint                          | Description                         |
+|--------|----------------------------------|-------------------------------------|
+| `POST` | `/api/v1/simulate/messages`      | Simulate the publishing of messages to FDM |
+
+All `/api/v1/simulate` endpoints accept the following optional query parameters:
+
+| Parameter   | Type    | Description                                                                 |
+|-------------|---------|-----------------------------------------------------------------------------|
+| `scenario`  | String  | The name of a specific scenario to simulate. If not provided all scenarios will be simulated. |
+| `repetitions` | Integer | The number of times to repeat the scenario(s). Default is `1`. |
 
 ## Requirements
 
-### Node.js
+### Docker
 
-Please install [Node.js](http://nodejs.org/) `>= v22` and [npm](https://nodejs.org/) `>= v11`. You will find it
-easier to use the Node Version Manager [nvm](https://github.com/creationix/nvm)
+This application is intended to be run in a Docker container to ensure consistency across environments.
 
-To use the correct version of Node.js for this application, via nvm:
-
-```bash
-cd fcp-sfd-comms-publisher-stub
-nvm use
-```
+Docker can be installed from [Docker's official website](https://docs.docker.com/get-docker/).
 
 ## Local development
 
@@ -52,10 +35,16 @@ npm install
 
 ### Development
 
-To run the application in `development` mode run:
+Build the Docker container:
 
 ```bash
-npm run dev
+npm run dev:build
+```
+
+Run the container in `development` mode:
+
+```bash
+npm run docker:dev
 ```
 
 ### Testing
@@ -63,174 +52,14 @@ npm run dev
 To test the application run:
 
 ```bash
-npm run test
+npm run docker:test
 ```
 
-### Production
-
-To mimic the application running in `production` mode locally run:
+Tests can also be run in `watch` mode to support test driven development (TDD):
 
 ```bash
-npm start
+npm run docker:test:watch
 ```
-
-### Npm scripts
-
-All available Npm scripts can be seen in [package.json](./package.json).
-To view them in your command line run:
-
-```bash
-npm run
-```
-
-### Update dependencies
-
-To update dependencies use [npm-check-updates](https://github.com/raineorshine/npm-check-updates):
-
-> The following script is a good start. Check out all the options on
-> the [npm-check-updates](https://github.com/raineorshine/npm-check-updates)
-
-```bash
-ncu --interactive --format group
-```
-
-### Formatting
-
-#### Windows prettier issue
-
-If you are having issues with formatting of line breaks on Windows update your global git config by running:
-
-```bash
-git config --global core.autocrlf false
-```
-
-## API endpoints
-
-| Endpoint             | Description                    |
-| :------------------- | :----------------------------- |
-| `GET: /health`       | Health                         |
-| `GET: /example    `  | Example API (remove as needed) |
-| `GET: /example/<id>` | Example API (remove as needed) |
-
-## Development helpers
-
-### MongoDB Locks
-
-If you require a write lock for Mongo you can acquire it via `server.locker` or `request.locker`:
-
-```javascript
-async function doStuff(server) {
-  const lock = await server.locker.lock('unique-resource-name')
-
-  if (!lock) {
-    // Lock unavailable
-    return
-  }
-
-  try {
-    // do stuff
-  } finally {
-    await lock.free()
-  }
-}
-```
-
-Keep it small and atomic.
-
-You may use **using** for the lock resource management.
-Note test coverage reports do not like that syntax.
-
-```javascript
-async function doStuff(server) {
-  await using lock = await server.locker.lock('unique-resource-name')
-
-  if (!lock) {
-    // Lock unavailable
-    return
-  }
-
-  // do stuff
-
-  // lock automatically released
-}
-```
-
-Helper methods are also available in `/src/helpers/mongo-lock.js`.
-
-### Proxy
-
-We are using forward-proxy which is set up by default. To make use of this: `import { fetch } from 'undici'` then
-because of the `setGlobalDispatcher(new ProxyAgent(proxyUrl))` calls will use the ProxyAgent Dispatcher
-
-If you are not using Wreck, Axios or Undici or a similar http that uses `Request`. Then you may have to provide the
-proxy dispatcher:
-
-To add the dispatcher to your own client:
-
-```javascript
-import { ProxyAgent } from 'undici'
-
-return await fetch(url, {
-  dispatcher: new ProxyAgent({
-    uri: proxyUrl,
-    keepAliveTimeout: 10,
-    keepAliveMaxTimeout: 10
-  })
-})
-```
-
-## Docker
-
-### Development image
-
-Build:
-
-```bash
-docker build --target development --no-cache --tag fcp-sfd-comms-publisher-stub:development .
-```
-
-Run:
-
-```bash
-docker run -e PORT=3001 -p 3001:3001 fcp-sfd-comms-publisher-stub:development
-```
-
-### Production image
-
-Build:
-
-```bash
-docker build --no-cache --tag fcp-sfd-comms-publisher-stub .
-```
-
-Run:
-
-```bash
-docker run -e PORT=3001 -p 3001:3001 fcp-sfd-comms-publisher-stub
-```
-
-### Docker Compose
-
-A local environment with:
-
-- Localstack for AWS services (S3, SQS)
-- Redis
-- MongoDB
-- This service.
-- A commented out frontend example.
-
-```bash
-docker compose up --build -d
-```
-
-### Dependabot
-
-We have added an example dependabot configuration file to the repository. You can enable it by renaming
-the [.github/example.dependabot.yml](.github/example.dependabot.yml) to `.github/dependabot.yml`
-
-### SonarCloud
-
-Instructions for setting up SonarCloud can be found in [sonar-project.properties](./sonar-project.properties)
 
 ## Licence
 
