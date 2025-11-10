@@ -5,6 +5,7 @@ import { secureContext } from '@defra/hapi-secure-context'
 
 import { config } from './config.js'
 import { router } from './plugins/router.js'
+import { swagger } from './plugins/swagger.js'
 import { requestLogger } from './common/helpers/logging/request-logger.js'
 import { failAction } from './common/helpers/fail-action.js'
 import { pulse } from './common/helpers/pulse.js'
@@ -46,6 +47,7 @@ async function createServer () {
     requestTracing,
     secureContext,
     pulse,
+    swagger,
     router
   ])
 

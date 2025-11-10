@@ -6,7 +6,7 @@ When the API is enabled (default for non-production environments) the following 
 
 | Method | Endpoint                          | Description                         |
 |--------|----------------------------------|-------------------------------------|
-| `POST` | `/api/v1/simulate/messages`      | Simulate the publishing of messages to FDM |
+| `POST` | `/api/v1/simulate/messages`      | Simulate the publishing of messages to `fcp-sfd-comms`. |
 
 All `/api/v1/simulate` endpoints accept the following optional query parameters:
 
