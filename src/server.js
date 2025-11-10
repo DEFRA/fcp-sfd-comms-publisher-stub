@@ -47,7 +47,7 @@ async function createServer () {
     requestTracing,
     secureContext,
     pulse,
-    swagger,
+    ...swagger,
     router
   ])
 
