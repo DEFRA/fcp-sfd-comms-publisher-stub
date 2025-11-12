@@ -2,8 +2,9 @@ import { constants as httpConstants } from 'node:http2'
 import Joi from 'joi'
 import { simulateMessages } from '../simulate/messages.js'
 import { createLogger } from '../common/helpers/logging/logger.js'
+import { sendToTopic } from '../simulate/send-to-topic.js'
 
-const { HTTP_STATUS_ACCEPTED } = httpConstants
+const { HTTP_STATUS_ACCEPTED, HTTP_STATUS_INTERNAL_SERVER_ERROR } = httpConstants
 
 const logger = createLogger()
 
@@ -13,26 +14,18 @@ const messages = {
   options: {
     description: 'Simulate messages from SFD consumers',
     notes: 'Scenario and number of repetitions can be specified',
-    tags: ['api', 'simulate', 'messages'],
-    validate: {
-      query: {
-        scenario: Joi.string().allow('').description('The scenario CRN to simulate messages for. If not provided, all known scenarios will be used'),
-        repetitions: Joi.number().integer().min(1).max(100000).default(1).description('The number of times to repeat the scenario')
-      }
-    }
+    tags: ['api', 'simulate', 'messages']
   },
   handler: async (request, h) => {
-    const { scenario, repetitions } = request.query
-
-    simulateMessages({ scenario, repetitions })
-      .then(summary => {
-        logger.info(`Simulated messages summary: ${JSON.stringify(summary)}`)
-      })
-      .catch(err => {
-        logger.error(`Simulate messages failed: ${err.message}`)
-      })
-
-    return h.response({ status: 'ok', message: 'Simulation started' }).code(HTTP_STATUS_ACCEPTED)
+    const { payload } = request
+    try {
+      await sendToTopic(payload)
+      logger.info(`Message sent to topic, id: ${payload.id}`)
+      return h.response({ status: 'ok', message: 'Message request processed.' }).code(HTTP_STATUS_ACCEPTED)
+    } catch(err) {
+      logger.error(`Message failed to send, id: ${payload.id}. ${err.message}` )
+      return h.response({status: 500, message: 'Failed to process message.'}).code(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+    }
   }
 }
 
