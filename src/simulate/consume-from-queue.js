@@ -5,7 +5,6 @@ import { createLogger } from '../common/helpers/logging/logger.js'
 import { config } from '../config.js'
 import environments from '../constants/environments.js'
 
-
 const logger = createLogger()
 
 let sqsConsumer
@@ -30,7 +29,7 @@ const startSqsConsumer = () => {
     batchSize: config.get('aws.sqs.batchSize'),
     waitTimeSeconds: config.get('aws.sqs.waitTimeSeconds'),
     pollingWaitTime: config.get('aws.sqs.pollingWaitTime'),
-    handleMessageBatch: async (batch) => { }, // consume the messages to avoid build up on the queue 
+    handleMessageBatch: async (batch) => { }, // consume the messages to avoid build up on the queue
     sqs: sqsClient
   })
 

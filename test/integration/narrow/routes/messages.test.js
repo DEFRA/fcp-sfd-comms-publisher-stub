@@ -3,8 +3,8 @@ import { describe, test, beforeEach, afterEach, vi, expect } from 'vitest'
 
 const { HTTP_STATUS_ACCEPTED } = httpConstants
 
-vi.mock('../../../../src/simulate/messages.js', () => ({
-  simulateMessages: vi.fn(() => Promise.resolve({ count: 1 }))
+vi.mock('../../../../src/simulate/send-to-topic.js', () => ({
+  sendToTopic: vi.fn(() => Promise.resolve({ }))
 }))
 
 vi.mock('../../../../src/common/helpers/logging/logger.js', () => ({
@@ -14,7 +14,7 @@ vi.mock('../../../../src/common/helpers/logging/logger.js', () => ({
   })
 }))
 
-const { simulateMessages } = await import('../../../../src/simulate/messages.js')
+const { sendToTopic } = await import('../../../../src/simulate/send-to-topic.js')
 const { createServer } = await import('../../../../src/server.js')
 
 let server
@@ -33,7 +33,10 @@ describe('messages routes', () => {
   test('POST /api/v1/simulate/messages should return 202', async () => {
     const options = {
       method: 'POST',
-      url: '/api/v1/simulate/messages?scenario=TEST&repetitions=3'
+      url: '/api/v1/simulate/messages',
+      payload: {
+        id: 'test',
+      }
     }
 
     const response = await server.inject(options)
@@ -41,37 +44,49 @@ describe('messages routes', () => {
     expect(response.statusCode).toBe(HTTP_STATUS_ACCEPTED)
   })
 
+  test('POST /api/v1/simulate/messages should return 500 on error', async () => {
+    sendToTopic.mockImplementationOnce(() => Promise.reject(new Error('Simulated failure')))
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/api/v1/simulate/messages',
+      payload: {
+        id: 'fail-test',
+      }
+    })
+    expect(response.statusCode).toBe(httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+    const payload = JSON.parse(response.payload)
+    expect(payload).toEqual({
+      status: 'server error',
+      message: 'Failed to process message.'
+    })
+  })
+
   test('POST /api/v1/simulate/messages should return expected payload', async () => {
     const response = await server.inject({
       method: 'POST',
-      url: '/api/v1/simulate/messages'
+      url: '/api/v1/simulate/messages',
+      payload: {
+        id: 'test',
+      }
     })
 
     const payload = JSON.parse(response.payload)
     expect(payload).toEqual({
       status: 'ok',
-      message: 'Simulation started'
+      message: 'Message request processed.'
     })
   })
 
-  test('should call simulateMessages with provided query parameters', async () => {
-    const scenario = 'TEST123'
-    const repetitions = 5
-
+  test('should call sendToTopic with provided query parameters', async () => {
     await server.inject({
       method: 'POST',
-      url: `/api/v1/simulate/messages?scenario=${scenario}&repetitions=${repetitions}`
+      url: '/api/v1/simulate/messages',
+      payload: {
+        id: 'test-id',
+      }
     })
 
-    expect(simulateMessages).toHaveBeenCalledWith({ scenario, repetitions })
-  })
-
-  test('should call simulateMessages with defaults if no query parameters', async () => {
-    await server.inject({
-      method: 'POST',
-      url: '/api/v1/simulate/messages'
-    })
-
-    expect(simulateMessages).toHaveBeenCalledWith({ scenario: undefined, repetitions: 1 })
+    expect(sendToTopic).toHaveBeenCalledWith({ id: 'test-id' })
   })
 })
