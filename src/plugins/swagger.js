@@ -4,7 +4,7 @@ import HapiSwagger from 'hapi-swagger'
 
 const swaggerOptions = {
   info: {
-    title: 'FCP Single Front Door Comms Publisher Stub',
+    title: 'FCP Single Front Door Comms Publisher Stub'
   }
 }
 

@@ -1,4 +1,3 @@
-import crypto from 'node:crypto'
 import { PublishCommand, SNSClient } from '@aws-sdk/client-sns'
 import { config } from '../config.js'
 
@@ -20,4 +19,3 @@ export async function sendToTopic (messageBody) {
     })
   )
 }
-
