@@ -1,6 +1,5 @@
 import { constants as httpConstants } from 'node:http2'
 import Joi from 'joi'
-import { simulateMessages } from '../simulate/messages.js'
 import { createLogger } from '../common/helpers/logging/logger.js'
 import { sendToTopic } from '../simulate/send-to-topic.js'
 
