@@ -30,6 +30,11 @@ subscribe_queue_to_topic() {
 }
 
 create_queue "fcp_sfd_comms_request"
-create_topic "fcp_event_publisher"
+create_topic "fcp_sfd_comms_publisher_request"
 
-subscribe_queue_to_topic "fcp_event_publisher" "fcp_sfd_comms_request"
+create_topic "fcp_sfd_comm_events_stub"
+create_queue "fcp_sfd_comms_publisher_event_consumer"
+
+subscribe_queue_to_topic "fcp_sfd_comms_publisher_request" "fcp_sfd_comms_request"
+subscribe_queue_to_topic "fcp_sfd_comm_events_stub" "fcp_sfd_comms_publisher_event_consumer"
+
