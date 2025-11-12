@@ -29,7 +29,7 @@ const startSqsConsumer = () => {
     batchSize: config.get('aws.sqs.batchSize'),
     waitTimeSeconds: config.get('aws.sqs.waitTimeSeconds'),
     pollingWaitTime: config.get('aws.sqs.pollingWaitTime'),
-    handleMessageBatch: async (batch) => { }, // consume the messages to avoid build up on the queue
+    handleMessageBatch: async () => { }, // consume the messages to avoid build up on the queue
     sqs: sqsClient
   })
 

@@ -7,10 +7,10 @@ import { startSqsConsumer, stopSqsConsumer } from './simulate/consume-from-queue
 const logger = createLogger()
 
 const server = await startServer()
-await startSqsConsumer()
+startSqsConsumer()
 
 server.events.on('stop', async () => {
-  await stopSqsConsumer()
+  stopSqsConsumer()
 })
 
 process.on('unhandledRejection', (err) => {
