@@ -108,6 +108,32 @@ const config = convict({
         env: 'AWS_SNS_TOPIC_ARN',
         default: null
       }
+    },
+    sqs: {
+      queueUrl: {
+        doc: 'AWS SQS queue url',
+        format: String,
+        env: 'AWS_SQS_QUEUE_URL',
+        default: null
+      },
+      waitTimeSeconds: {
+        doc: 'The duration (in seconds) for which the call will wait for a message to arrive in the queue before returning.',
+        format: Number,
+        default: 10,
+        env: 'SQS_CONSUMER_WAIT_TIME_SECONDS'
+      },
+      batchSize: {
+        doc: 'The maximum number of messages to return in each call',
+        format: Number,
+        default: 10,
+        env: 'SQS_CONSUMER_BATCH_SIZE'
+      },
+      pollingWaitTime: {
+        doc: 'The duration (in seconds) before sqs-consumer polls for new messages',
+        format: Number,
+        default: 0,
+        env: 'SQS_CONSUMER_POLLING_WAIT_TIME'
+      }
     }
   },
   httpProxy: {
