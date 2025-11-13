@@ -1,0 +1,3 @@
+services:
+  fcp-sfd-comms-publisher-stub:
+    command: npm run test:watch

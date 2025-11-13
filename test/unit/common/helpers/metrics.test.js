@@ -1,7 +1,9 @@
+import { vi, describe, beforeEach, test, expect } from 'vitest'
+
 import { StorageResolution, Unit } from 'aws-embedded-metrics'
 
-import { config } from '../../config.js'
-import { metricsCounter } from './metrics.js'
+import { config } from '../../../../src/config.js'
+import { metricsCounter } from '../../../../src/common/helpers/metrics.js'
 
 const mockPutMetric = vi.fn()
 const mockFlush = vi.fn()
@@ -18,7 +20,8 @@ vi.mock('aws-embedded-metrics', async (importOriginal) => {
     })
   }
 })
-vi.mock('./logging/logger.js', () => ({
+
+vi.mock('../../../../src/common/helpers/logging/logger.js', () => ({
   createLogger: () => ({ error: (...args) => mockLoggerError(...args) })
 }))
 
