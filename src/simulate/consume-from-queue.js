@@ -1,29 +1,13 @@
 import { Consumer } from 'sqs-consumer'
-import { SQSClient } from '@aws-sdk/client-sqs'
 
 import { createLogger } from '../common/helpers/logging/logger.js'
 import { config } from '../config.js'
-import environments from '../constants/environments.js'
 
 const logger = createLogger()
 
 let sqsConsumer
 
-const sqsConfig = {
-  endpoint: config.get('aws.endpoint'),
-  region: config.get('aws.region')
-}
-
-if (process.env.NODE_ENV !== environments.PRODUCTION) {
-  sqsConfig.credentials = {
-    accessKeyId: config.get('aws.accessKeyId'),
-    secretAccessKey: config.get('aws.secretAccessKey')
-  }
-}
-
-const sqsClient = new SQSClient(sqsConfig)
-
-const startSqsConsumer = () => {
+const startSqsConsumer = (sqsClient) => {
   sqsConsumer = Consumer.create({
     queueUrl: config.get('aws.sqs.queueUrl'),
     batchSize: config.get('aws.sqs.batchSize'),
@@ -34,6 +18,8 @@ const startSqsConsumer = () => {
   })
 
   sqsConsumer.on('started', () => {
+    console.log('SQS consumer started')
+    console.log(sqsClient.testProp)
     logger.info('SQS consumer started')
   })
 
