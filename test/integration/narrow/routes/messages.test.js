@@ -35,7 +35,7 @@ describe('messages routes', () => {
       method: 'POST',
       url: '/api/v1/simulate/messages',
       payload: {
-        id: 'test',
+        id: 'test'
       }
     }
 
@@ -51,7 +51,7 @@ describe('messages routes', () => {
       method: 'POST',
       url: '/api/v1/simulate/messages',
       payload: {
-        id: 'fail-test',
+        id: 'fail-test'
       }
     })
     expect(response.statusCode).toBe(httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
@@ -67,7 +67,7 @@ describe('messages routes', () => {
       method: 'POST',
       url: '/api/v1/simulate/messages',
       payload: {
-        id: 'test',
+        id: 'test'
       }
     })
 
@@ -83,7 +83,7 @@ describe('messages routes', () => {
       method: 'POST',
       url: '/api/v1/simulate/messages',
       payload: {
-        id: 'test-id',
+        id: 'test-id'
       }
     })
 
