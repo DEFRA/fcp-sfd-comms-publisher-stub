@@ -11,12 +11,11 @@ const messages = {
   path: '/api/v1/simulate/messages',
   options: {
     description: 'Simulate messages from SFD consumers',
-    notes: 'Scenario and number of repetitions can be specified',
+    notes: 'Submit raw payloads to be sent to the SNS topic, see fcp-sfd-comms asyncapi for format.',
     tags: ['api', 'simulate', 'messages']
   },
   handler: async (request, h) => {
     const { payload } = request
-    console.log('Received payload:', payload)
     try {
       await sendToTopic(payload)
       logger.info(`Message sent to topic, id: ${payload.id}`)

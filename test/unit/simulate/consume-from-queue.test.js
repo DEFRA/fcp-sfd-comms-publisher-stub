@@ -41,7 +41,6 @@ describe('comms request sqs consumer', () => {
     })
 
     test('should log consumer start', () => {
-      console.log(mockConsumer.emit)
       mockConsumer.emit('started')
 
       expect(mockLogger.info).toHaveBeenCalledWith('SQS consumer started')

@@ -18,8 +18,6 @@ const startSqsConsumer = (sqsClient) => {
   })
 
   sqsConsumer.on('started', () => {
-    console.log('SQS consumer started')
-    console.log(sqsClient.testProp)
     logger.info('SQS consumer started')
   })
 
