@@ -7,18 +7,18 @@ services:
     networks:
       - fcp-sfd
 
-  localstack:
+  localstack-2:
     ports:
-      - '4566:4566'
-      - '4510-4559:4510-4559'
+      - '4568:4568'
+      - '4600-4649:4600-4649'
     volumes:
       - ./localstack/localstack.sh:/etc/localstack/init/ready.d/localstack.sh
-      - localstack-data:/var/lib/localstack
+      - localstack-2-data:/var/lib/localstack
     networks:
       - fcp-sfd
 
 volumes:
-  localstack-data:
+  localstack-2-data:
 
 networks:
   fcp-sfd:
