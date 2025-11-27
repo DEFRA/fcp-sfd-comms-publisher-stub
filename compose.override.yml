@@ -7,19 +7,6 @@ services:
     networks:
       - fcp-sfd
 
-  localstack-2:
-    ports:
-      - '4568:4568'
-      - '4600-4649:4600-4649'
-    volumes:
-      - ./localstack/localstack.sh:/etc/localstack/init/ready.d/localstack.sh
-      - localstack-2-data:/var/lib/localstack
-    networks:
-      - fcp-sfd
-
-volumes:
-  localstack-2-data:
-
 networks:
   fcp-sfd:
     driver: bridge

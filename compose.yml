@@ -1,37 +1,16 @@
 services:
   fcp-sfd-comms-publisher-stub:
-    links:
-      - 'localstack-2:localstack'
     build:
       context: .
       target: development
-    depends_on:
-      localstack-2:
-        condition: service_healthy
     environment:
       AWS_REGION: eu-west-2
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
       AWS_SNS_TOPIC_ARN: arn:aws:sns:eu-west-2:000000000000:fcp_sfd_comms_publisher_request
-      AWS_SQS_QUEUE_URL: http://sqs.eu-west-2.localhost.localstack.cloud:4568/000000000000/fcp_sfd_comms_publisher_event_consumer
-      AWS_ENDPOINT_URL: http://localstack:4568
+      AWS_SQS_QUEUE_URL: http://sqs.eu-west-2.localhost.localstack.cloud:4567/000000000000/fcp_sfd_comms_publisher_event_consumer
+      AWS_ENDPOINT_URL: http://localstack:4567
 
     volumes:
       - ./src:/home/node/src
       - ./package.json:/home/node/package.json
-
-  localstack-2:
-    image: localstack/localstack:3.0.2
-    environment:
-      EXTERNAL_SERVICE_PORTS_START: 4600
-      EXTERNAL_SERVICE_PORTS_END: 4649
-      GATEWAY_LISTEN: 0.0.0.0:4568
-      LS_LOG: warn
-      SERVICES: sqs,sns
-      AWS_ACCESS_KEY_ID: test
-      AWS_SECRET_ACCESS_KEY: test
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4568/_localstack/health"]
-      interval: 5s
-      start_period: 5s
-      retries: 3
