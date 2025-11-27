@@ -1,5 +1,10 @@
 # fcp-sfd-comms-publisher-stub
 
+## Prerequisites
+- Docker
+- Docker Compose
+- Node.js (v24)
+
 ## API
 
 When the API is enabled (default for non-production environments) the following endpoints are available:
@@ -24,6 +29,28 @@ This application is intended to be run in a Docker container to ensure consisten
 Docker can be installed from [Docker's official website](https://docs.docker.com/get-docker/).
 
 ## Local development
+
+### Running the application
+
+> ⚠️ You cannot run this service independently, it is intended to be run alongside [fcp-sfd-comms](https://github.com/DEFRA/fcp-sfd-comms).
+> [fcp-sfd-comms](https://github.com/DEFRA/fcp-sfd-comms) should be started first.
+> Follow [the instructions](https://github.com/DEFRA/fcp-sfd-comms/blob/change-localstack-ports/README.md#Running-the-application) to start the latter for local development.
+> The `aws` resources required for both services are all owned and created by fcp-sfd-comms locally.
+
+##### Build container image
+
+The service runs inside a Docker container and the container image can be built using Docker Compose:
+```
+docker compose build
+```
+
+##### Start the container
+
+Once built, the container is also started via Docker Compose:
+
+```
+docker compose up -d
+```
 
 ### Setup
 
