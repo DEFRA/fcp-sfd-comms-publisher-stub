@@ -8,8 +8,8 @@ services:
       AWS_ACCESS_KEY_ID: test
       AWS_SECRET_ACCESS_KEY: test
       AWS_SNS_TOPIC_ARN: arn:aws:sns:eu-west-2:000000000000:fcp_sfd_comms_publisher_request
-      AWS_SQS_QUEUE_URL: http://sqs.eu-west-2.localhost.localstack.cloud:4567/000000000000/fcp_sfd_comms_publisher_event_consumer
-      AWS_ENDPOINT_URL: http://localstack:4567
+      AWS_SQS_QUEUE_URL: http://sqs.eu-west-2.localhost.localstack-1.cloud:4567/000000000000/fcp_sfd_comms_publisher_event_consumer
+      AWS_ENDPOINT_URL: http://localstack-1:4567
 
     volumes:
       - ./src:/home/node/src
