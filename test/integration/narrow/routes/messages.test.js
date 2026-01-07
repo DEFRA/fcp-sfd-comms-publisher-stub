@@ -57,6 +57,7 @@ describe('messages routes', () => {
     expect(response.statusCode).toBe(httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
     const payload = JSON.parse(response.payload)
     expect(payload).toEqual({
+      id: 'fail-test',
       status: 'server error',
       message: 'Failed to process message.'
     })
@@ -74,7 +75,8 @@ describe('messages routes', () => {
     const payload = JSON.parse(response.payload)
     expect(payload).toEqual({
       status: 'ok',
-      message: 'Message request processed.'
+      id: 'test',
+      message: 'Message request processed'
     })
   })
 

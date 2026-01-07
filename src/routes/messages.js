@@ -19,10 +19,10 @@ const messages = {
     try {
       await sendToTopic(payload)
       logger.info(`Message sent to topic, id: ${payload.id}`)
-      return h.response({ status: 'ok', message: 'Message request processed.' }).code(HTTP_STATUS_ACCEPTED)
+      return h.response({ status: 'ok', message: 'Message request processed', id: payload.id }).code(HTTP_STATUS_ACCEPTED)
     } catch (err) {
       logger.error(`Message failed to send, id: ${payload.id}. ${err.message}`)
-      return h.response({ status: 'server error', message: 'Failed to process message.' }).code(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+      return h.response({ status: 'server error', message: 'Failed to process message.', id: payload.id }).code(HTTP_STATUS_INTERNAL_SERVER_ERROR)
     }
   }
 }
