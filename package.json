@@ -28,7 +28,8 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@aws-sdk/client-sns": "3.925.0",
+    "@aws-sdk/client-sns": "3.1030.0",
+    "@aws-sdk/client-sqs": "3.1030.0",
     "@defra/hapi-secure-context": "0.3.0",
     "@defra/hapi-tracing": "1.22.0",
     "@elastic/ecs-pino-format": "1.5.0",
@@ -37,8 +38,7 @@
     "@hapi/vision": "7.0.3",
     "aws-embedded-metrics": "4.2.0",
     "aws4": "1.13.2",
-    "client-sqs": "github:aws-sdk/client-sqs",
-    "convict": "6.2.4",
+    "convict": "6.2.5",
     "convict-format-with-validator": "6.2.0",
     "global-agent": "3.0.0",
     "hapi-pino": "13.0.0",
@@ -48,7 +48,7 @@
     "pino": "10.1.0",
     "pino-pretty": "13.0.0",
     "sqs-consumer": "14.1.0",
-    "undici": "7.10.0"
+    "undici": "7.25.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "3.2.4",
