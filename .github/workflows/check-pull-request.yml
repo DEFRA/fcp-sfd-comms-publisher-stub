@@ -11,6 +11,8 @@ on:
       - synchronize
       - ready_for_review
 
+  workflow_dispatch:    
+
 jobs:
   pr-validator:
     name: Run Pull Request Checks
