@@ -9,7 +9,9 @@ vi.mock('../../../src/config.js', () => ({
 }))
 
 const sendMock = vi.fn()
-const PublishCommandMock = vi.fn((input) => ({ ...input }))
+const PublishCommandMock = vi.fn(function (input) {
+  return { ...input }
+})
 
 class SNSClientMock {
   send (...args) { return sendMock(...args) }
