@@ -15,12 +15,14 @@ vi.mock('../../../src/config.js', () => ({
 }))
 
 let SQSClientArgs
+const SQSClientMock = vi.fn(function (args) {
+  SQSClientArgs = args
+  return { config: args }
+})
+
 vi.mock('@aws-sdk/client-sqs', () => {
   return {
-    SQSClient: vi.fn((args) => {
-      SQSClientArgs = args
-      return { config: args }
-    })
+    SQSClient: SQSClientMock
   }
 })
 
