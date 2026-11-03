@@ -7,4 +7,28 @@ ignore:
         reason: Fix in progress, awaiting release
         expires: 2025-11-18T12:44:22.005Z
         created: 2025-10-19T12:44:22.008Z
+  SNYK-JS-JOI-22114209:
+    - '*':
+        reason: >-
+          ReDoS in joi's email rule when its multiple option is enabled. The
+          fixed releases (joi 18.3.1 and 17.13.9, published 2026-10-28) fall
+          inside the 7-day supply-chain cooldown enforced by min-release-age=7
+          in .npmrc, so npm rejects them until 2026-11-04T10:05Z.
+
+          Exposure here is nil: the vulnerable path is reached only through
+          Joi.string().email({ multiple: true }), which this service never
+          uses.
+
+          Remove this ignore and upgrade joi once the cooldown window clears.
+        expires: 2026-11-11T00:00:00.000Z
+        created: 2026-11-03T00:00:00.000Z
+  SNYK-JS-APIDEVTOOLSJSONSCHEMAREFPARSER-17937352:
+    - '*':
+        reason: >-
+          No upstream fix available. @apidevtools/swagger-parser (via hapi-swagger)
+          requires internal APIs removed in json-schema-ref-parser 15.x; forcing the
+          fixed version breaks hapi-swagger at runtime. Re-review when hapi-swagger
+          ships a compatible upgrade.
+        expires: 2026-12-17T00:00:00.000Z
+        created: 2026-11-03T00:00:00.000Z
 patch: {}
